@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  app:
+    container_name: app
+    restart: always
+    build: blog-backend
+    ports:
+      - "5000:5000"
+    links:
+      - db
+  db:
+    image: 'mongo'
+    restart: always
+    container_name: 'db'
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017"
+    volumes:
+      - .db/:/data/db
+  frontend:
+    container_name: frontend
+    restart: always
+    build: blog-frontend
+    ports:
+      - "3000:3000"
+    tty: true
+
