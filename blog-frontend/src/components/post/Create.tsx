@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import { useForm } from "react-hook-form";
+import React, {useState, useEffect, useContext} from 'react';
+import {useForm} from "react-hook-form";
 import {withRouter, useHistory} from 'react-router-dom';
-import {useAuth0} from '../../contexts/auth0-context';
+import {AuthContext} from "../../context/auth-context";
 
 function Create(): JSX.Element {
     let history = useHistory();
-    const {user, getIdTokenClaims} = useAuth0();
-    const {register, handleSubmit, watch, errors} = useForm();
+    const {register, handleSubmit, errors} = useForm();
+    const {state} = useContext(AuthContext);
 
     interface IValues {
         [key: string]: any;
@@ -16,16 +16,27 @@ function Create(): JSX.Element {
     const [values, setValues] = useState<IValues>([]);
     const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    // const token = window.localStorage.getItem('token');
 
     useEffect(() => {
-        if (user) {
-            console.log(`this is the user: `, user);
-            setAuthor(user.name)
+        console.log('hello');
+        const fetchUser = async (): Promise<void> => {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/me`, {
+                method: "post",
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "authorization": `Bearer ${state.token}`
+                }),
+            })
+                .then(res => res.json())
+                .then(json => setAuthor(json.user))
+                .catch(err => console.log(err));
         }
-    }, [user])
+        fetchUser().then();
+    }, [])
 
-    const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-        // e.preventDefault();
+    const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement> | any): Promise<void> => {
         setLoading(true);
         const formData = {
             title: values.title,
@@ -44,13 +55,12 @@ function Create(): JSX.Element {
 
     const submitform = async (formData: {}) => {
         try {
-            const accessToken = await getIdTokenClaims();
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/blog/post`, {
                 method: "post",
                 headers: new Headers({
                     "Content-Type": "application/json",
                     "Accept": "application/json",
-                    "authorization": `Bearer ${accessToken.__raw}`
+                    "authorization": `Bearer ${state.token}`
                 }),
                 body: JSON.stringify(formData)
             });
@@ -69,7 +79,7 @@ function Create(): JSX.Element {
 
     return (
         <div>
-            <div className={"col-md-12 form-wrapper"}>
+            <div className="col-md-12 form-wrapper fixed-top-margin">
                 <h2> Create Post </h2>
                 {!submitSuccess && (
                     <div className="alert alert-info" role="alert">
@@ -128,13 +138,15 @@ function Create(): JSX.Element {
                                defaultValue={author}
                                onChange={(e) => handleInputChanges(e)}
                                name="author"
-                               className="form-control"/>
-                        {errors.author && errors.author.type === "required" && (
-                            <div className="error">Please enter your name.</div>
-                        )}
+                               className="form-control"
+                               readOnly={true}/>
+                        {/*{errors.author && errors.author.type === "required" && (*/}
+                        {/*    <div className="error">Please enter your name.</div>*/}
+                        {/*)}*/}
                     </div>
                     <div className="form-group col-md-4 pull-right">
-                        <button className="btn btn-success" type="submit">
+                        <button className="btn btn-success"
+                                type="submit">
                             Create Post
                         </button>
                         {loading &&

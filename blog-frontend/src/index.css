@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -14,7 +16,7 @@ code {
 
 
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .form-wrapper {
@@ -27,9 +29,10 @@ code {
 }
 
 .navbar {
-  height: 100px;
-  line-height: 100px;
+  height: 76px;
+  line-height: 25px;
   font-size: 1.5rem;
+  z-index: 9999;
 }
 
 
@@ -358,74 +361,74 @@ Responsiveness from the new template
 
 /* Screens Resolution : 767px
 -------------------------------------------------------------------------- */
-@media only screen and (max-width: 767px) {
+/*@media only screen and (max-width: 767px) {*/
 
-  /* ---------------------------------
-  1. PRIMARY STYLES
-  --------------------------------- */
+/*  !* ---------------------------------*/
+/*  1. PRIMARY STYLES*/
+/*  --------------------------------- *!*/
 
-  p{ line-height: 1.4; }
+/*  p{ line-height: 1.4; }*/
 
-  h1{ font-size: 3em; }
-  h2{ font-size: 2.5em; }
-  h3{ font-size: 1.8em; }
-  h4{ font-size: 1.5em; }
-  h5{ font-size: 1.2em; }
+/*  h1{ font-size: 3em; }*/
+/*  h2{ font-size: 2.5em; }*/
+/*  h3{ font-size: 1.8em; }*/
+/*  h4{ font-size: 1.5em; }*/
+/*  h5{ font-size: 1.2em; }*/
 
-  /* ---------------------------------
-  2. COMMONS FOR PAGE DESIGN
-  --------------------------------- */
+/*  !* ---------------------------------*/
+/*  2. COMMONS FOR PAGE DESIGN*/
+/*  --------------------------------- *!*/
 
-  .section{ padding: 40px 0 10px; }
-
-
-
-  /* ---------------------------------
-  3. MENU
-  --------------------------------- */
-
-
-  header .main-menu{ display: none; float: none; clear: both; border-top: 1px solid #ccc; }
-
-  header .main-menu > li{ display: block; float: none; border-bottom: 1px solid #ddd; }
-
-  header .main-menu > li:last-child{ border-bottom: 0; }
-
-  header .main-menu li > a,
-  header .main-menu ul.drop-down li > a{ display: block; line-height: 1; height: auto; padding: 15px; background: none; }
+/*  .section{ padding: 40px 0 10px; }*/
 
 
 
-  /* SEARCH AREA */
-
-  header .src-area{ width: 100%; }
-
-
-  /* NAV ICON */
-
-  .menu-nav-icon{ display: inline-block; }
+/*  !* ---------------------------------*/
+/*  3. MENU*/
+/*  --------------------------------- *!*/
 
 
-  /* ---------------------------------
-  6. EXTRA BIG BLOG
-  --------------------------------- */
+/*  header .main-menu{ display: inline-flex; float: left; clear: both; border-top: 1px solid #ccc; }*/
 
-  .post-style-2 .blog-image{ width: 100%; height: auto; float: none; }
+/*  header .main-menu > li{ display: block; float: none; border-bottom: 1px solid #ddd; }*/
 
-  .post-style-2 .blog-info{ height: auto; width: 100%; }
+/*  header .main-menu > li:last-child{ border-bottom: 0; }*/
 
-
-  /* ---------------------------------
-  10. FOOTER
-  --------------------------------- */
-
-  footer{ padding: 40px 0 0px; margin-top: 0px; }
+/*  header .main-menu li > a,*/
+/*  header .main-menu ul.drop-down li > a{ display: block; line-height: 1; height: auto; padding: 15px; background: none; }*/
 
 
 
+/*  !* SEARCH AREA *!*/
+
+/*  header .src-area{ width: 100%; }*/
 
 
-}
+/*  !* NAV ICON *!*/
+
+/*  .menu-nav-icon{ display: inline-block; }*/
+
+
+/*  !* ---------------------------------*/
+/*  6. EXTRA BIG BLOG*/
+/*  --------------------------------- *!*/
+
+/*  .post-style-2 .blog-image{ width: 100%; height: auto; float: none; }*/
+
+/*  .post-style-2 .blog-info{ height: auto; width: 100%; }*/
+
+
+/*  !* ---------------------------------*/
+/*  10. FOOTER*/
+/*  --------------------------------- *!*/
+
+/*  footer{ padding: 40px 0 0px; margin-top: 0px; }*/
+
+
+
+
+
+/*}*/
 
 /* Screens Resolution : 479px
 -------------------------------------------------------------------------- */
@@ -452,4 +455,210 @@ Responsiveness from the new template
 @media only screen and (max-width: 290px) {
 
 
+}
+
+@media (min-width: 0px) {
+  .navbar-expand-xl {
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+  }
+  .navbar-expand-xl .navbar-nav {
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+  .navbar-expand-xl .navbar-nav .dropdown-menu {
+    position: absolute;
+  }
+  .navbar-expand-xl .navbar-nav .nav-link {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  .navbar-expand-xl > .container,
+  .navbar-expand-xl > .container-fluid, .navbar-expand-xl > .container-sm, .navbar-expand-xl > .container-md, .navbar-expand-xl > .container-lg, .navbar-expand-xl > .container-xl {
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+  }
+  .navbar-expand-xl .navbar-collapse {
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-preferred-size: auto;
+    flex-basis: auto;
+  }
+  .navbar-expand-xl .navbar-toggler {
+    display: none;
+  }
+}
+
+body{font-family: 'Raleway', sans-serif ;}
+
+.tab-style{
+  font-size:20px;
+  width:50%;
+  background-color:#f2f2f2;
+  text-align:center;
+
+
+}
+.nav-tabs > li > a {
+  margin-right: 0px;
+  color:grey;
+}
+
+
+
+.group2 {
+  position: relative;
+  margin-top: 16px;
+}
+
+.btn-block{margin-top:20px;
+  margin-bottom:20px;
+  font-size:18px;}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {   background-color:#e5ecf4;
+  color:#4a89dc;}
+
+.login-shadow{-webkit-box-shadow: 5px -5px 6px 0px rgba(82,82,82,0.52);
+  -moz-box-shadow: 5px -5px 6px 0px rgba(82,82,82,0.52);
+  box-shadow: 5px -5px 6px 0px rgba(82,82,82,0.52);
+  z-index:1;
+
+}
+
+.signup-shadow{-webkit-box-shadow: -5px 0px 6px 0px rgba(82,82,82,0.52);
+  -moz-box-shadow: -5px -5px 6px 0px rgba(82,82,82,0.52);
+  box-shadow: -5px 0px 6px 0px rgba(82,82,82,0.52);
+
+}
+
+
+.modal-header{background-color:#e5ecf4;}
+
+.group {
+  position: relative;
+  margin-top: 30px;
+}
+
+
+.input {
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  -webkit-appearance: none;
+  display: block;
+  background: none;
+  color: #636363;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #757575;
+}
+
+.input:focus { outline: none; }
+
+
+/* Label */
+
+.label {
+  color: #757575;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: -10px;
+  top: 10px;
+  transition: all 0.2s ease;
+}
+
+
+/* active */
+
+.input:focus ~ .label, .input.used ~ .label {
+  top: -20px;
+  transform: scale(.75); left:-15px;
+  /* font-size: 14px; */
+  color: #4a89dc;
+}
+
+/* Underline */
+
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.bar:before, .bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #4a89dc;
+  transition: all 0.2s ease;
+}
+
+.bar:before { left: 50%; }
+
+.bar:after { right: 50%; }
+
+
+/* active */
+
+.input:focus ~ .bar:before, .input:focus ~ .bar:after { width: 50%; }
+
+
+/* Highlight */
+
+.highlight {
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+
+/* active */
+
+.input:focus ~ .highlight {
+  animation: inputHighlighter 0.3s ease;
+}
+
+
+@media  screen and (max-width: 767px) and (min-width: 576px){
+  #myModal{margin-left:20%;
+    margin-right:20%;}
+
+  #forgot-password{margin-left:20%;
+    margin-right:20%;}
+}
+
+
+@media screen and (min-width: 768px) {
+
+  #myModal .modal-dialog  {width:500px;}
+
+  #forgot-password .modal-dialog{width:500px;}
+
+  .modal-body{padding-left:50px;
+    padding-right:50px;}
+}
+
+
+/*.modal-body{background-image:url('http://res.cloudinary.com/rinma/image/upload/v1500489833/Airplane-flying-desktop-pictureproba2_rlcced.jpg');*/
+/*  background-size:cover;*/
+/*  z-index:4;}*/
+
+em{display:none;}
+
+.error {
+  font-size: 12px;
+}
+
+.fixed-top-margin {
+  margin-top: 115px;
 }

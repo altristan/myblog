@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
-import {useAuth0} from '../../contexts/auth0-context';
+import {useForm} from "react-hook-form";
 
 function Edit(): JSX.Element {
-    const {getIdTokenClaims} = useAuth0();
     let history = useHistory();
     let {postId} = useParams();
+    const {register, handleSubmit, errors} = useForm();
 
     interface IValues {
         [key: string]: any;
@@ -15,18 +15,19 @@ function Edit(): JSX.Element {
     const [values, setValues] = useState<IValues>([]);
     const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
     const [loading, setLoading] = useState(false);
+    const token = window.localStorage.getItem('token');
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/blog/post/${postId}`);
-            const json = await response.json();
+            const json = await response.json().then();
             setPost(json)
         }
-        fetchData();
+        fetchData().then();
     }, [postId]);
 
-    const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-        e.preventDefault();
+    const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement> | any): Promise<void> => {
+        // e.preventDefault();
         setLoading(true);
         const submitSuccess: boolean = await submitForm();
         setSubmitSuccess(submitSuccess);
@@ -37,17 +38,17 @@ function Edit(): JSX.Element {
     }
     const submitForm = async (): Promise<boolean> => {
         try {
-            const accessToken = await getIdTokenClaims();
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/blog/edit?postID=${postId}`, {
                 method: "put",
                 headers: new Headers({
                     "Content-Type": "application/json",
                     Accept: "application/json",
-                    "authorization": `Bearer ${accessToken.__raw}`
+                    "authorization": `Bearer ${token}`
                 }),
                 body: JSON.stringify(values)
-            });
-            return response.ok;
+            }).then((res) => console.log(res))
+                .catch(err => console.log(err));
+            return true;
         } catch (ex) {
             return false;
         }
@@ -60,7 +61,7 @@ function Edit(): JSX.Element {
     }
 
     return (
-        <div className={'page-wrapper'}>
+        <div className='page-wrapper fixed-top-margin'>
             {post &&
             <div className={"col-md-12 form-wrapper"}>
                 <h2> Edit Post </h2>
@@ -69,22 +70,40 @@ function Edit(): JSX.Element {
                         The post has been edited successfully!
                     </div>
                 )}
-                <form id={"create-post-form"} onSubmit={handleFormSubmission} noValidate={true}>
+                <form id={"create-post-form"} onSubmit={handleSubmit(handleFormSubmission)} noValidate={true}>
                     <div className="form-group col-md-12">
                         <label htmlFor="title"> Title </label>
-                        <input type="text" id="title" defaultValue={post.title} onChange={(e) => handleInputChanges(e)}
-                               name="title" className="form-control" placeholder="Enter title"/>
+                        <input type="text" id="title" defaultValue={post.title}
+                               onChange={(e) => handleInputChanges(e)}
+                               name="title" className="form-control"
+                               placeholder="Enter title"
+                               ref={register({required: true})}
+                        />
+                        {errors.title && errors.title.type === "required" && (
+                            <div className="error">Please enter a title.</div>
+                        )}
                     </div>
                     <div className="form-group col-md-12">
                         <label htmlFor="description"> Description </label>
                         <input type="text" id="description" defaultValue={post.description}
                                onChange={(e) => handleInputChanges(e)} name="description" className="form-control"
-                               placeholder="Enter Description"/>
+                               placeholder="Enter Description"
+                               ref={register({required: true})}
+                        />
+                        {errors.description && errors.description.type === "required" && (
+                            <div className="error">Please don't leave empty description.</div>
+                        )}
                     </div>
                     <div className="form-group col-md-12">
                         <label htmlFor="body"> Write Content </label>
                         <input type="text" id="body" defaultValue={post.body} onChange={(e) => handleInputChanges(e)}
-                               name="body" className="form-control" placeholder="Enter content"/>
+                               name="body" className="form-control"
+                               placeholder="Enter content"
+                               ref={register({required: true})}
+                        />
+                        {errors.body && errors.body.type === "required" && (
+                            <div className="error">Please don't leave empty content.</div>
+                        )}
                     </div>
                     <div className="form-group col-md-4 pull-right">
                         <button className="btn btn-success" type="submit">

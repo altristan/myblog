@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import * as mongoose from "mongoose";
 
 export const BlogSchema = new mongoose.Schema({
   title: String,
@@ -6,5 +6,4 @@ export const BlogSchema = new mongoose.Schema({
   body: String,
   author: String,
   date_posted: String,
-  last_updated: String,
 });

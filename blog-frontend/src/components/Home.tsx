@@ -1,22 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Link, useHistory} from 'react-router-dom';
-import {useAuth0} from '../contexts/auth0-context';
-
+import {AuthContext} from "../context/auth-context";
 
 function Home(): JSX.Element {
     let history = useHistory()
-    const {isAuthenticated, getIdTokenClaims, user} = useAuth0();
-
+    const {state} = useContext(AuthContext);
     const [posts, setPosts] = useState<any>();
+    const [author, setAuthor] = useState<string>('');
 
     const deletePost = async (id: string) => {
-        const accessToken = await getIdTokenClaims();
         await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/blog/delete?postID=${id}`, {
             method: "delete",
             headers: new Headers({
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "authorization": `Bearer ${accessToken.__raw}`
+                "authorization": `Bearer ${state.token}`
             })
         });
         _removePostFromView(id);
@@ -34,11 +32,26 @@ function Home(): JSX.Element {
             const json = await response.json();
             setPosts(json)
         }
-        fetchPosts();
-    }, [])
+        if (state.token) {
+            const fetchUser = async (): Promise<void> => {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/me`, {
+                    method: "post",
+                    headers: new Headers({
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "authorization": `Bearer ${state.token}`
+                    }),
+                });
+                const json = await response.json();
+                setAuthor(json.user);
+            }
+            fetchUser().then();
+        }
+        fetchPosts().then();
+    },[state.token])
 
     return (
-        <section className="blog-area section">
+        <section className="blog-area section mt-5">
             <div className="container">
                 <div className="row">
                     {posts && posts.map((post: { title: React.ReactNode; _id: any; author: any; }) => (
@@ -55,7 +68,7 @@ function Home(): JSX.Element {
                                     <span className="avatar">
                     <img
                         src="http://res.cloudinary.com/yemiwebby-com-ng/image/upload/v1513770253/WEB_FREAK_50PX-01_yaqxg7.png"
-                        alt="Profile"/>
+                        alt="User"/>
                   </span>
 
                                     <div className="blog-info">
@@ -75,14 +88,16 @@ function Home(): JSX.Element {
                                     </li>
                                     <li>
                                         {
-                                            isAuthenticated && (user.name === post.author) &&
+                                            (author === post.author) &&
+                                            state.isAuthenticated &&
                                             <Link to={`/edit/${post._id}`} className="btn btn-sm btn-outline-secondary">Edit
                                                 Post </Link>
                                         }
                                     </li>
                                     <li>
                                         {
-                                            isAuthenticated && (user.name === post.author) &&
+                                            (author === post.author) &&
+                                            state.isAuthenticated &&
                                             <button className="btn btn-sm btn-outline-secondary"
                                                     onClick={() => deletePost(post._id)}>Delete Post</button>
                                         }

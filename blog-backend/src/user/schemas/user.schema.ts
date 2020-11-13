@@ -1,23 +1,31 @@
 import * as mongoose from 'mongoose';
+import {compare, hash} from "bcrypt";
+import {User} from "../interfaces/user.interface";
 
 export const UserSchema = new mongoose.Schema ({
-  email: String,
-  phone_number: String,
-  user_metadata: Array,
-  blocked: Boolean,
-  email_verified: Boolean,
-  phone_verified: Boolean,
-  app_metadata: Array,
-  given_name: String,
-  family_name: String,
-  name: String,
-  nickname: String,
-  picture: String,
-  user_id: String,
-  connection: String,
-  password: String,
-  verify_email: Boolean,
-  username: String,
+  username: {type: String, required: true, unique: true},
+  given_name: {type: String, required: true},
+  family_name: {type: String, required: true},
+  phone_number: {type: String, required: false},
+  email: {type: String, required: true, unique: true},
+  password: {type: String, select: false},
   blog: Array,
-  profile_picture: String,
+  profile_picture: {type: String, required: false},
 });
+
+export async function preSaveHook(next) {
+  if(!this.isModified('password')) return next();
+
+  const password = await hash(this.password, 12);
+  this.set('password', password);
+
+  next();
+}
+
+UserSchema.pre<User>('save', preSaveHook);
+
+export async function passwordMatch(password: string): Promise<boolean> {
+  return await compare(password, this.password);
+}
+
+UserSchema.methods.comparePassword = passwordMatch;
