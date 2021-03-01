@@ -30,7 +30,7 @@ function Home(): JSX.Element {
         const fetchPosts = async (): Promise<any> => {
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/blog/posts`);
             const json = await response.json();
-            setPosts(json)
+            setPosts(json);
         }
         if (state.token) {
             const fetchUser = async (): Promise<void> => {
