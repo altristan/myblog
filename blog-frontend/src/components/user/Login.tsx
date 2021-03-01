@@ -36,8 +36,8 @@ function Login(): JSX.Element {
                 history.push('/');
                 dispatch(authorizedAction());
             } else {
-                // history.push('/auth/signin');
-                // setSubmitError(false);
+                history.push('/auth/signin');
+                setSubmitError(false);
                 window.location.reload();
                 dispatch(unauthorizedAction());
             }

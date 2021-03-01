@@ -38,55 +38,55 @@ function Register(): JSX.Element {
     }
 
     const submitForm = async (formData: {}) => {
-        // let success: boolean = false;
-        // await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/signup`, {
-        //     method: "post",
-        //     headers: new Headers({
-        //         "Content-Type": "application/json",
-        //         "Accept": "application/json",
-        //     }),
-        //     body: JSON.stringify(formData)
-        // }).then(async (response) => {
-        //     console.log(response);
-        //     if (response.ok) {
-        //         const json = await response.json();
-        //         console.log(json);
-        //         success = true;
-        //     } else {
-        //         success = false;
-        //     }
-        // }).catch((error) => {
-        //     console.log(error);
-        //     success = false
-        // });
-        // return success;
-        try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/signup`, {
-                method: "post",
-                headers: new Headers({
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                }),
-                body: JSON.stringify(formData)
-            });
-            // console.log(formData);
+        let success: boolean = false;
+        await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/signup`, {
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }),
+            body: JSON.stringify(formData)
+        }).then(async (response) => {
             console.log(response);
-            if (response.status === 400) {
-                setIsEmailInvalid(true);
-                console.log('Is email invalid: ', isEmailInvalid);
-                return false;
+            if (response.ok) {
+                const json = await response.json();
+                console.log(json);
+                success = true;
+            } else {
+                success = false;
             }
+        }).catch((error) => {
+            console.log(error);
+            success = false
+        });
+        return success;
+    //     try {
+    //         const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/signup`, {
+    //             method: "post",
+    //             headers: new Headers({
+    //                 "Content-Type": "application/json",
+    //                 "Accept": "application/json",
+    //             }),
+    //             body: JSON.stringify(formData)
+    //         });
+    //         // console.log(formData);
+    //         console.log(response);
+    //         if (response.status === 400) {
+    //             setIsEmailInvalid(true);
+    //             console.log('Is email invalid: ', isEmailInvalid);
+    //             return false;
+    //         }
 
-            if (response.status === 409) {
-                setIsCredUnique(true);
-                console.log('Is credential unique: ', isCredUnique);
-                return false;
-            }
-            return response.ok;
-        } catch (ex) {
-            console.log(ex);
-            return false;
-        }
+    //         if (response.status === 409) {
+    //             setIsCredUnique(true);
+    //             console.log('Is credential unique: ', isCredUnique);
+    //             return false;
+    //         }
+    //         return response.ok;
+    //     } catch (ex) {
+    //         console.log(ex);
+    //         return false;
+    //     }
     }
     const setFormValues = (formValues: IValues) => {
         setValues({...values, ...formValues})
